@@ -2,6 +2,10 @@
 const config = {
   theme: {
     extend: {
+      fontFamily: {
+        heading: ['var(--font-playfair-display)', 'serif'],
+        sans: ['var(--font-lato)', 'sans-serif'],
+      },
       typography: {
         DEFAULT: {
           css: [
@@ -22,8 +26,14 @@ const config = {
                 fontSize: '2.5rem',
               },
               h2: {
-                fontSize: '1.25rem',
+                fontSize: '2rem',
                 fontWeight: 600,
+              },
+              h3: {
+                fontSize: '1.5rem',
+              },
+              h4: {
+                fontSize: '1.25rem',
               },
             },
           ],
@@ -35,6 +45,12 @@ const config = {
                 fontSize: '3.5rem',
               },
               h2: {
+                fontSize: '3rem',
+              },
+              h3: {
+                fontSize: '2rem',
+              },
+              h4: {
                 fontSize: '1.5rem',
               },
             },

@@ -1,6 +1,7 @@
 import type { Block } from 'payload'
 
 import {
+  AlignFeature,
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
@@ -14,6 +15,30 @@ export const CallToAction: Block = {
   interfaceName: 'CallToActionBlock',
   fields: [
     {
+      name: 'backgroundImage',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Background Image',
+      admin: {
+        description: 'Optional background image for the CTA section',
+      },
+    },
+    {
+      name: 'overlayOpacity',
+      type: 'select',
+      defaultValue: 'medium',
+      label: 'Overlay Opacity',
+      admin: {
+        condition: (_, siblingData) => Boolean(siblingData?.backgroundImage),
+        description: 'Controls text readability over the background image',
+      },
+      options: [
+        { label: 'Light', value: 'light' },
+        { label: 'Medium', value: 'medium' },
+        { label: 'Dark', value: 'dark' },
+      ],
+    },
+    {
       name: 'richText',
       type: 'richText',
       editor: lexicalEditor({
@@ -21,6 +46,7 @@ export const CallToAction: Block = {
           return [
             ...rootFeatures,
             HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+            AlignFeature(),
             FixedToolbarFeature(),
             InlineToolbarFeature(),
           ]

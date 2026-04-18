@@ -201,7 +201,19 @@ export interface Page {
       | null;
     media?: (string | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | ContentMediaBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | ParallaxHeroBlock
+    | MenuSectionBlock
+    | LocationInfoBlock
+    | TestimonialBlock
+    | ImageGalleryBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -444,6 +456,14 @@ export interface User {
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
+  /**
+   * Optional background image for the CTA section
+   */
+  backgroundImage?: (string | null) | Media;
+  /**
+   * Controls text readability over the background image
+   */
+  overlayOpacity?: ('light' | 'medium' | 'dark') | null;
   richText?: {
     root: {
       type: string;
@@ -536,6 +556,52 @@ export interface ContentBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentMediaBlock".
+ */
+export interface ContentMediaBlock {
+  alignment?: ('contentMedia' | 'mediaContent') | null;
+  richText: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  media: string | Media;
+  enableLink?: boolean | null;
+  link?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: string | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: string | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'outline') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contentMedia';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -780,6 +846,142 @@ export interface Form {
     | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ParallaxHeroBlock".
+ */
+export interface ParallaxHeroBlock {
+  backgroundImage: string | Media;
+  heading: string;
+  subheading?: string | null;
+  /**
+   * Optional call-to-action button
+   */
+  link: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: string | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: string | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'outline') | null;
+  };
+  overlayOpacity?: ('light' | 'medium' | 'dark') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'parallaxHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MenuSectionBlock".
+ */
+export interface MenuSectionBlock {
+  sectionTitle: string;
+  sectionDescription?: string | null;
+  items?:
+    | {
+        name: string;
+        description?: string | null;
+        /**
+         * e.g. "12.99" or "Market Price"
+         */
+        price: string;
+        tags?: ('vegetarian' | 'gluten-free' | 'spicy' | 'popular')[] | null;
+        image?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'menuSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LocationInfoBlock".
+ */
+export interface LocationInfoBlock {
+  address: string;
+  phone: string;
+  hours?:
+    | {
+        /**
+         * e.g. "Tue - Thu"
+         */
+        days: string;
+        /**
+         * e.g. "11am - 9pm" or "Closed"
+         */
+        time: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Paste a Google Maps embed URL to show an interactive map
+   */
+  mapEmbedUrl?: string | null;
+  additionalInfo?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'locationInfo';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialBlock".
+ */
+export interface TestimonialBlock {
+  quotes?:
+    | {
+        text: string;
+        author: string;
+        source?: ('google' | 'yelp' | 'facebook' | 'other') | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonial';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageGalleryBlock".
+ */
+export interface ImageGalleryBlock {
+  heading?: string | null;
+  images?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'imageGallery';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1086,9 +1288,15 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
+        contentMedia?: T | ContentMediaBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        parallaxHero?: T | ParallaxHeroBlockSelect<T>;
+        menuSection?: T | MenuSectionBlockSelect<T>;
+        locationInfo?: T | LocationInfoBlockSelect<T>;
+        testimonial?: T | TestimonialBlockSelect<T>;
+        imageGallery?: T | ImageGalleryBlockSelect<T>;
       };
   meta?:
     | T
@@ -1109,6 +1317,8 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "CallToActionBlock_select".
  */
 export interface CallToActionBlockSelect<T extends boolean = true> {
+  backgroundImage?: T;
+  overlayOpacity?: T;
   richText?: T;
   links?:
     | T
@@ -1156,6 +1366,28 @@ export interface ContentBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentMediaBlock_select".
+ */
+export interface ContentMediaBlockSelect<T extends boolean = true> {
+  alignment?: T;
+  richText?: T;
+  media?: T;
+  enableLink?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "MediaBlock_select".
  */
 export interface MediaBlockSelect<T extends boolean = true> {
@@ -1185,6 +1417,99 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ParallaxHeroBlock_select".
+ */
+export interface ParallaxHeroBlockSelect<T extends boolean = true> {
+  backgroundImage?: T;
+  heading?: T;
+  subheading?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+      };
+  overlayOpacity?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MenuSectionBlock_select".
+ */
+export interface MenuSectionBlockSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  sectionDescription?: T;
+  items?:
+    | T
+    | {
+        name?: T;
+        description?: T;
+        price?: T;
+        tags?: T;
+        image?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LocationInfoBlock_select".
+ */
+export interface LocationInfoBlockSelect<T extends boolean = true> {
+  address?: T;
+  phone?: T;
+  hours?:
+    | T
+    | {
+        days?: T;
+        time?: T;
+        id?: T;
+      };
+  mapEmbedUrl?: T;
+  additionalInfo?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialBlock_select".
+ */
+export interface TestimonialBlockSelect<T extends boolean = true> {
+  quotes?:
+    | T
+    | {
+        text?: T;
+        author?: T;
+        source?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageGalleryBlock_select".
+ */
+export interface ImageGalleryBlockSelect<T extends boolean = true> {
+  heading?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -1637,6 +1962,10 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: string;
+  /**
+   * Upload a logo image for the site header
+   */
+  logo?: (string | null) | Media;
   navItems?:
     | {
         link: {
@@ -1657,6 +1986,12 @@ export interface Header {
         id?: string | null;
       }[]
     | null;
+  socialLinks?: {
+    facebook?: string | null;
+    instagram?: string | null;
+    x?: string | null;
+    yelp?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1666,26 +2001,62 @@ export interface Header {
  */
 export interface Footer {
   id: string;
-  navItems?:
+  /**
+   * Upload a logo image for the site footer
+   */
+  logo?: (string | null) | Media;
+  columns?:
     | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: string | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: string | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-        };
+        heading?: string | null;
+        contentType?: ('richText' | 'navLinks') | null;
+        richText?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        navItems?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: string | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: string | Post;
+                    } | null);
+                url?: string | null;
+                label: string;
+              };
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
+  socialLinks?: {
+    facebook?: string | null;
+    instagram?: string | null;
+    x?: string | null;
+    yelp?: string | null;
+  };
+  /**
+   * e.g. "Downtown Trini's & Margarita Joe's"
+   */
+  copyright?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1694,6 +2065,7 @@ export interface Footer {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
+  logo?: T;
   navItems?:
     | T
     | {
@@ -1707,6 +2079,14 @@ export interface HeaderSelect<T extends boolean = true> {
               label?: T;
             };
         id?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        facebook?: T;
+        instagram?: T;
+        x?: T;
+        yelp?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -1717,20 +2097,38 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
-  navItems?:
+  logo?: T;
+  columns?:
     | T
     | {
-        link?:
+        heading?: T;
+        contentType?: T;
+        richText?: T;
+        navItems?:
           | T
           | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
             };
         id?: T;
       };
+  socialLinks?:
+    | T
+    | {
+        facebook?: T;
+        instagram?: T;
+        x?: T;
+        yelp?: T;
+      };
+  copyright?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
