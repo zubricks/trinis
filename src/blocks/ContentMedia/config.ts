@@ -36,7 +36,7 @@ export const ContentMedia: Block = {
         features: ({ rootFeatures }) => {
           return [
             ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
+            HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4', 'h5'] }),
             AlignFeature(),
             FixedToolbarFeature(),
             InlineToolbarFeature(),

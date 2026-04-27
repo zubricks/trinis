@@ -45,7 +45,7 @@ export const hero: Field = {
         features: ({ rootFeatures }) => {
           return [
             ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4', 'h5'] }),
             FixedToolbarFeature(),
             InlineToolbarFeature(),
           ]
@@ -59,13 +59,37 @@ export const hero: Field = {
       },
     }),
     {
+      name: 'backgroundColor',
+      type: 'select',
+      label: 'Background Color',
+      admin: {
+        condition: (_, { type } = {}) => type === 'highImpact',
+        description: 'Optional solid background color (used when no media is set)',
+      },
+      options: [
+        { label: 'None', value: 'none' },
+        { label: 'Primary (Teal)', value: 'primary' },
+        { label: 'Secondary (Orange)', value: 'secondary' },
+        { label: 'Cream', value: 'cream' },
+        { label: 'Gold', value: 'gold' },
+      ],
+    },
+    {
+      name: 'marqueeText',
+      type: 'text',
+      label: 'Vertical Marquee Text',
+      admin: {
+        condition: (_, { type } = {}) => type === 'highImpact',
+        description: 'Scrolling vertical text on the side of the hero (e.g. "TACOS MUY CALIENTE")',
+      },
+    },
+    {
       name: 'media',
       type: 'upload',
       admin: {
         condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
       },
       relationTo: 'media',
-      required: true,
     },
   ],
   label: false,

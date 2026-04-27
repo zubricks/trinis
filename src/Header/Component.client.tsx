@@ -16,7 +16,7 @@ interface HeaderClientProps {
 }
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
-  const [theme, setTheme] = useState<string | null>(null)
+  const [isScrolled, setIsScrolled] = useState(false)
   const { headerTheme, setHeaderTheme } = useHeaderTheme()
   const pathname = usePathname()
 
@@ -26,12 +26,21 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   }, [pathname])
 
   useEffect(() => {
-    if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [headerTheme])
+    const handleScroll = () => setIsScrolled(window.scrollY > 20)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const isTransparent = headerTheme === 'dark'
+  const showBackground = !isTransparent || isScrolled
 
   return (
-    <header className="sticky top-0 z-50 bg-background border-b border-border" data-theme="light">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+        showBackground ? 'bg-background border-b border-border' : ''
+      }`}
+      data-theme="light"
+    >
       <div className="container py-7 grid grid-cols-[auto_1fr_auto] items-center gap-4">
         <Link href="/" className="shrink-0 hover:opacity-80 transition-opacity">
           {data.logo && typeof data.logo === 'object' && (data.logo as Media).url ? (

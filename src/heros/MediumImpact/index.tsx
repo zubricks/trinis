@@ -15,7 +15,7 @@ export const MediumImpactHero: React.FC<Page['hero']> = ({ links, media, richTex
           <Media fill imgClassName="-z-10 object-cover" priority resource={media} />
         )}
       </div>
-      <div className="container z-10 relative flex items-center justify-center">
+      <div className="container pt-44 pb-12 z-10 relative flex items-center justify-center">
         <div className="max-w-[36.5rem] text-center">
           {richText && (
             <RichText

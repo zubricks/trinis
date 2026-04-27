@@ -4,6 +4,10 @@ import { Media as MediaComponent } from '@/components/Media'
 
 import type { MenuSectionBlock as MenuSectionBlockProps } from '@/payload-types'
 
+function slugify(text: string): string {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+}
+
 const tagColors: Record<string, string> = {
   vegetarian: 'bg-secondary/20 text-secondary',
   'gluten-free': 'bg-accent/20 text-accent-foreground',
@@ -24,7 +28,7 @@ export const MenuSectionBlock: React.FC<MenuSectionBlockProps> = ({
   items,
 }) => {
   return (
-    <section className="container py-12">
+    <section id={`menu-${slugify(sectionTitle)}`} className="container py-12 scroll-mt-40">
       <div className="text-center mb-10">
         <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">{sectionTitle}</h2>
         {sectionDescription && (

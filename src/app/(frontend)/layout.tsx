@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
 
 import { cn } from '@/utilities/ui'
-import { Playfair_Display, Lato } from 'next/font/google'
+import { Lato } from 'next/font/google'
+import localFont from 'next/font/local'
 import React from 'react'
 
-const playfairDisplay = Playfair_Display({
-  subsets: ['latin'],
-  variable: '--font-playfair-display',
+const chineseRocks = localFont({
+  src: '../../../public/fonts/chinese_rocks_rg-webfont.woff2',
+  variable: '--font-chinese-rocks',
   display: 'swap',
 })
 
@@ -32,7 +33,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const { isEnabled } = await draftMode()
 
   return (
-    <html className={cn(playfairDisplay.variable, lato.variable)} lang="en" suppressHydrationWarning>
+    <html className={cn(chineseRocks.variable, lato.variable)} lang="en" suppressHydrationWarning>
       <head>
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />

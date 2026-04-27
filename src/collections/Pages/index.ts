@@ -7,12 +7,14 @@ import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
-import { ParallaxHero } from '../../blocks/ParallaxHero/config'
 import { MenuSection } from '../../blocks/MenuSection/config'
 import { LocationInfo } from '../../blocks/LocationInfo/config'
 import { Testimonial } from '../../blocks/Testimonial/config'
-import { ImageGallery } from '../../blocks/ImageGallery/config'
 import { ContentMedia } from '../../blocks/ContentMedia/config'
+import { MenuNav } from '../../blocks/MenuNav/config'
+import { FeaturedItem } from '../../blocks/FeaturedItem/config'
+import { Divider } from '../../blocks/Divider/config'
+import { ImageSlider } from '../../blocks/ImageSlider/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -78,7 +80,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, ContentMedia, MediaBlock, Archive, FormBlock, ParallaxHero, MenuSection, LocationInfo, Testimonial, ImageGallery],
+              blocks: [CallToAction, Content, ContentMedia, MediaBlock, Archive, FormBlock, MenuNav, MenuSection, LocationInfo, Testimonial, FeaturedItem, Divider, ImageSlider],
               required: true,
               admin: {
                 initCollapsed: true,

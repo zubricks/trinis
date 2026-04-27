@@ -5,6 +5,15 @@ export const MenuSection: Block = {
   interfaceName: 'MenuSectionBlock',
   fields: [
     {
+      name: 'reduceTopMargin',
+      type: 'checkbox',
+      label: 'Reduce Top Margin',
+      defaultValue: false,
+      admin: {
+        description: 'Remove the top margin on this block (useful for the first section after a menu nav)',
+      },
+    },
+    {
       name: 'sectionTitle',
       type: 'text',
       required: true,

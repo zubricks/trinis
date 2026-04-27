@@ -199,6 +199,14 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
+    /**
+     * Optional solid background color (used when no media is set)
+     */
+    backgroundColor?: ('none' | 'primary' | 'secondary' | 'cream' | 'gold') | null;
+    /**
+     * Scrolling vertical text on the side of the hero (e.g. "TACOS MUY CALIENTE")
+     */
+    marqueeText?: string | null;
     media?: (string | null) | Media;
   };
   layout: (
@@ -208,11 +216,13 @@ export interface Page {
     | MediaBlock
     | ArchiveBlock
     | FormBlock
-    | ParallaxHeroBlock
+    | MenuNavBlock
     | MenuSectionBlock
     | LocationInfoBlock
     | TestimonialBlock
-    | ImageGalleryBlock
+    | FeaturedItemBlock
+    | DividerBlock
+    | ImageSliderBlock
   )[];
   meta?: {
     title?: string | null;
@@ -849,44 +859,22 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ParallaxHeroBlock".
+ * via the `definition` "MenuNavBlock".
  */
-export interface ParallaxHeroBlock {
-  backgroundImage: string | Media;
-  heading: string;
-  subheading?: string | null;
-  /**
-   * Optional call-to-action button
-   */
-  link: {
-    type?: ('reference' | 'custom') | null;
-    newTab?: boolean | null;
-    reference?:
-      | ({
-          relationTo: 'pages';
-          value: string | Page;
-        } | null)
-      | ({
-          relationTo: 'posts';
-          value: string | Post;
-        } | null);
-    url?: string | null;
-    label: string;
-    /**
-     * Choose how the link should be rendered.
-     */
-    appearance?: ('default' | 'outline') | null;
-  };
-  overlayOpacity?: ('light' | 'medium' | 'dark') | null;
+export interface MenuNavBlock {
   id?: string | null;
   blockName?: string | null;
-  blockType: 'parallaxHero';
+  blockType: 'menuNav';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "MenuSectionBlock".
  */
 export interface MenuSectionBlock {
+  /**
+   * Remove the top margin on this block (useful for the first section after a menu nav)
+   */
+  reduceTopMargin?: boolean | null;
   sectionTitle: string;
   sectionDescription?: string | null;
   items?:
@@ -954,34 +942,94 @@ export interface LocationInfoBlock {
  * via the `definition` "TestimonialBlock".
  */
 export interface TestimonialBlock {
-  quotes?:
-    | {
-        text: string;
-        author: string;
-        source?: ('google' | 'yelp' | 'facebook' | 'other') | null;
-        id?: string | null;
-      }[]
-    | null;
+  quote: string;
+  author?: string | null;
+  backgroundColor?: ('default' | 'primary' | 'secondary') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'testimonial';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ImageGalleryBlock".
+ * via the `definition` "FeaturedItemBlock".
  */
-export interface ImageGalleryBlock {
-  heading?: string | null;
-  images?:
+export interface FeaturedItemBlock {
+  alignment?: ('imageLeft' | 'imageRight') | null;
+  image: string | Media;
+  badges?:
     | {
-        image: string | Media;
-        caption?: string | null;
+        /**
+         * e.g. "NEW!", "SPICY", "FAN FAVORITE"
+         */
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  name: string;
+  /**
+   * e.g. "12.99" or "Market Price"
+   */
+  price?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featuredItem';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DividerBlock".
+ */
+export interface DividerBlock {
+  style?: ('line' | 'checkerboard' | 'colorBand') | null;
+  color?: ('primary' | 'secondary' | 'accent') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'divider';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageSliderBlock".
+ */
+export interface ImageSliderBlock {
+  slides?:
+    | {
+        backgroundImage: string | Media;
+        overlayOpacity?: ('light' | 'medium' | 'dark') | null;
+        richText?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
         id?: string | null;
       }[]
     | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'imageGallery';
+  blockType: 'imageSlider';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1281,6 +1329,8 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               id?: T;
             };
+        backgroundColor?: T;
+        marqueeText?: T;
         media?: T;
       };
   layout?:
@@ -1292,11 +1342,13 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
-        parallaxHero?: T | ParallaxHeroBlockSelect<T>;
+        menuNav?: T | MenuNavBlockSelect<T>;
         menuSection?: T | MenuSectionBlockSelect<T>;
         locationInfo?: T | LocationInfoBlockSelect<T>;
         testimonial?: T | TestimonialBlockSelect<T>;
-        imageGallery?: T | ImageGalleryBlockSelect<T>;
+        featuredItem?: T | FeaturedItemBlockSelect<T>;
+        divider?: T | DividerBlockSelect<T>;
+        imageSlider?: T | ImageSliderBlockSelect<T>;
       };
   meta?:
     | T
@@ -1422,23 +1474,9 @@ export interface FormBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ParallaxHeroBlock_select".
+ * via the `definition` "MenuNavBlock_select".
  */
-export interface ParallaxHeroBlockSelect<T extends boolean = true> {
-  backgroundImage?: T;
-  heading?: T;
-  subheading?: T;
-  link?:
-    | T
-    | {
-        type?: T;
-        newTab?: T;
-        reference?: T;
-        url?: T;
-        label?: T;
-        appearance?: T;
-      };
-  overlayOpacity?: T;
+export interface MenuNavBlockSelect<T extends boolean = true> {
   id?: T;
   blockName?: T;
 }
@@ -1447,6 +1485,7 @@ export interface ParallaxHeroBlockSelect<T extends boolean = true> {
  * via the `definition` "MenuSectionBlock_select".
  */
 export interface MenuSectionBlockSelect<T extends boolean = true> {
+  reduceTopMargin?: T;
   sectionTitle?: T;
   sectionDescription?: T;
   items?:
@@ -1486,28 +1525,52 @@ export interface LocationInfoBlockSelect<T extends boolean = true> {
  * via the `definition` "TestimonialBlock_select".
  */
 export interface TestimonialBlockSelect<T extends boolean = true> {
-  quotes?:
-    | T
-    | {
-        text?: T;
-        author?: T;
-        source?: T;
-        id?: T;
-      };
+  quote?: T;
+  author?: T;
+  backgroundColor?: T;
   id?: T;
   blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ImageGalleryBlock_select".
+ * via the `definition` "FeaturedItemBlock_select".
  */
-export interface ImageGalleryBlockSelect<T extends boolean = true> {
-  heading?: T;
-  images?:
+export interface FeaturedItemBlockSelect<T extends boolean = true> {
+  alignment?: T;
+  image?: T;
+  badges?:
     | T
     | {
-        image?: T;
-        caption?: T;
+        text?: T;
+        id?: T;
+      };
+  name?: T;
+  price?: T;
+  description?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DividerBlock_select".
+ */
+export interface DividerBlockSelect<T extends boolean = true> {
+  style?: T;
+  color?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageSliderBlock_select".
+ */
+export interface ImageSliderBlockSelect<T extends boolean = true> {
+  slides?:
+    | T
+    | {
+        backgroundImage?: T;
+        overlayOpacity?: T;
+        richText?: T;
         id?: T;
       };
   id?: T;

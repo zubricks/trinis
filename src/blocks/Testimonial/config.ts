@@ -5,36 +5,29 @@ export const Testimonial: Block = {
   interfaceName: 'TestimonialBlock',
   fields: [
     {
-      name: 'quotes',
-      type: 'array',
-      label: 'Testimonials',
-      minRows: 1,
-      fields: [
-        {
-          name: 'text',
-          type: 'textarea',
-          required: true,
-        },
-        {
-          name: 'author',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'source',
-          type: 'select',
-          options: [
-            { label: 'Google', value: 'google' },
-            { label: 'Yelp', value: 'yelp' },
-            { label: 'Facebook', value: 'facebook' },
-            { label: 'Other', value: 'other' },
-          ],
-        },
+      name: 'quote',
+      type: 'textarea',
+      required: true,
+      label: 'Quote Text',
+    },
+    {
+      name: 'author',
+      type: 'text',
+      label: 'Author',
+    },
+    {
+      name: 'backgroundColor',
+      type: 'select',
+      defaultValue: 'primary',
+      options: [
+        { label: 'Default (Cream)', value: 'default' },
+        { label: 'Primary (Teal)', value: 'primary' },
+        { label: 'Secondary (Orange)', value: 'secondary' },
       ],
     },
   ],
   labels: {
-    plural: 'Testimonials',
-    singular: 'Testimonial',
+    plural: 'Quotes',
+    singular: 'Quote',
   },
 }

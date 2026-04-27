@@ -3,7 +3,7 @@ const config = {
   theme: {
     extend: {
       fontFamily: {
-        heading: ['var(--font-playfair-display)', 'serif'],
+        heading: ['var(--font-chinese-rocks)', 'sans-serif'],
         sans: ['var(--font-lato)', 'sans-serif'],
       },
       typography: {
@@ -23,14 +23,13 @@ const config = {
           css: [
             {
               h1: {
-                fontSize: '2.5rem',
+                fontSize: '5rem',
               },
               h2: {
-                fontSize: '2rem',
-                fontWeight: 600,
+                fontSize: '2.5rem',
               },
               h3: {
-                fontSize: '1.5rem',
+                fontSize: '1.75rem',
               },
               h4: {
                 fontSize: '1.25rem',
@@ -42,13 +41,13 @@ const config = {
           css: [
             {
               h1: {
-                fontSize: '3.5rem',
+                fontSize: '9rem',
               },
               h2: {
-                fontSize: '3rem',
+                fontSize: '3.5rem',
               },
               h3: {
-                fontSize: '2rem',
+                fontSize: '2.25rem',
               },
               h4: {
                 fontSize: '1.5rem',
